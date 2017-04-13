@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>2048</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="title">2048</h1>
+            <div class="panel">
+                <div class="score-panel">
+                    <div class="score-panel__container">
+                        <p class="score-panel__title">score</p>
+                        <p class="score-panel__score" id="currentScore">0</p>
+                    </div>
+                    <div class="score-panel__container">
+                        <p class="score-panel__title">best</p>
+                        <p class="score-panel__score" id="bestScore">0</p>
+                    </div>
+                </div>
+                <div class="control-panel">
+                    <a id="newGameBtn" class="control-panel__btn">new game</a>
+                    <a id="undoBtn" class="control-panel__btn">undo</a>
+                </div>
+            </div>
+        </div>
+        <div class="gameboard">
+            <div class="grid-container">
+                <div class="grid-row">
+                    <div class="grid-cell"></div>
+                    <div class="grid-cell"></div>
+                    <div class="grid-cell"></div>
+                    <div class="grid-cell"></div>
+                </div>
+                <div class="grid-row">
+                    <div class="grid-cell"></div>
+                    <div class="grid-cell"></div>
+                    <div class="grid-cell"></div>
+                    <div class="grid-cell"></div>
+                </div>
+                <div class="grid-row">
+                    <div class="grid-cell"></div>
+                    <div class="grid-cell"></div>
+                    <div class="grid-cell"></div>
+                    <div class="grid-cell"></div>
+                </div>
+                <div class="grid-row">
+                    <div class="grid-cell"></div>
+                    <div class="grid-cell"></div>
+                    <div class="grid-cell"></div>
+                    <div class="grid-cell"></div>
+                </div>
+            </div>
+            <div class="tile-container">
+            </div>
+        </div>
+        <div class="note">
+            <p>目标合成2048，PC用键盘箭头上下左右，手机用手指向四个方向划，就可以移动方块了</p>
+            <p>Demo by <a href="https://github.com/chenxxzhe/practice-2048">chenxxzhe</a>. Based on <a href="http://gabrielecirulli.github.io/2048/">2048 origin</a></p>
+        </div>
+    </div>
+
+
+</body>
+</html>

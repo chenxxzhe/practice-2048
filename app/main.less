@@ -1,0 +1,191 @@
+/*先写正常页面，响应式用媒体查询，小于520px，修改某些元素的长宽，字体大小*/
+
+body {
+    background-color: #FAF8EE;
+    font-family: arial;
+    user-select: none;
+
+}
+
+.container {
+    margin: 0 auto;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+}
+
+.title {
+    margin: 0;
+    color: #776E65;
+}
+.panel {
+    flex-grow: 1;
+}
+
+.score-panel {
+    display: flex;
+    justify-content: flex-end;
+
+}
+.score-panel__container {
+    margin: 5px 0 5px 5px;
+    padding: 5px 10px;
+    border-radius: 3px;
+    background-color: #BBADA0;
+}
+.score-panel__title {
+    margin: 0;
+    color: #EEE;
+    font-weight: bolder;
+}
+.score-panel__score {
+    margin: 0;
+    color: #FFF;
+    text-align: center;
+    font-weight: bold;
+}
+.control-panel {
+    display: flex;
+    justify-content: flex-end;
+}
+.control-panel__btn {
+    margin: 5px 0 5px 5px;
+    padding: 5px 10px;
+    color: #FFF;
+    background-color: #8F7A66;
+    border-radius: 3px;
+    font-weight: bold;
+    cursor: pointer;
+}
+.control-panel__btn:active {
+    color: #ddd;
+    background-color: #7F5A46;
+}
+
+
+.gameboard {
+    position: relative;
+    margin: 10px 0;
+    background-color: #BBADA0;
+    border-radius: 10px;
+}
+
+
+.grid-row {
+    display: flex;
+    justify-content: space-between;
+}
+.grid-cell {
+    background-color: #CDC1B4;
+    border-radius: 3px;
+}
+
+.tile-container {
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+.tile {
+    position: absolute;
+    border-radius: 3px;
+    transition: all 0.2s linear;
+}
+
+
+.tile-color-2 { background-color: #EEE4DA; }
+.tile-color-4 { background-color: #EDE0C8; }
+.tile-color-8 { background-color: #F2B179; }
+.tile-color-16 { background-color: #F59563; }
+.tile-color-32 { background-color: #F67C5F; }
+.tile-color-64 { background-color: #F65E3B; }
+.tile-color-128 { background-color: #EDCF72; }
+.tile-color-256 { background-color: #EDCC61; }
+.tile-color-512 { background-color: #EDC850; }
+.tile-color-1024 { background-color: #edc089; }
+.tile-color-2048 { background-color: #edb8c2; }
+.tile-color-4196 { background-color: #dc98b2; }
+.tile-color-8392 { background-color: #db88a2; }
+
+// 生成4X4格子位置
+// 注意：when 下面不能再有when
+
+.for-row(@row, @col, @w, @gap) when (@row>0){
+    .for-row((@row - 1), @col, @w, @gap);
+    .for-col(@row, @col, @w, @gap);
+}
+.for-col(@row, @col, @w, @gap) when (@col>0){
+    .for-col(@row, (@col - 1), @w, @gap);
+    .tile-pos-@{row}-@{col} {
+        transform: translate(((@w + @gap) * @col - @w), ((@w + @gap) * @row - @w));
+    }
+}
+
+// 响应式 520px 为界
+@base-font-size: 12px;
+@base-font-size-small: 8px;
+@title-font-size-multiple: 7;
+@btn-font-size-multiple: 1.5;
+@score-font-size-multiple: 2;
+@note-font-size-multiple: 1.5;
+@container-width: 520px;
+@container-width-small: 290px;
+@gameboard-width: @container-width;
+@gameboard-width-small: @container-width-small;
+@grid-gap-width: 12px;
+@grid-gap-width-small: 10px;
+@grid-width: (@gameboard-width - 5 * @grid-gap-width) / 4;
+@grid-width-small: (@gameboard-width-small - 5 * @grid-gap-width-small) / 4;
+@media screen and (max-width: @container-width) {
+    .container {width: @container-width-small}
+    .grid-container { padding: @grid-gap-width-small; }
+    .grid-row {
+        margin-bottom: @grid-gap-width-small;
+    }
+    .grid-cell {
+        height: @grid-width-small;
+        width: @grid-width-small;
+    }
+    .tile {
+        height: @grid-width-small;
+        width: @grid-width-small;
+    }
+    .gameboard {
+        width: @gameboard-width-small;
+        height: @gameboard-width-small;
+    }
+    .for-row(4,4, @grid-width-small, @grid-gap-width-small);
+
+    .title { font-size: (@base-font-size-small * @title-font-size-multiple)}
+    .control-panel__btn {font-size: (@base-font-size-small * @btn-font-size-multiple)}
+    .score-panel__score {font-size: (@base-font-size-small * @score-font-size-multiple)}
+    .note { font-size: (@base-font-size-small * @note-font-size-multiple)}
+
+}
+
+@media screen and (min-width: (@container-width + 1px)) {
+    .container {width: @container-width}
+    .grid-container { padding: @grid-gap-width; }
+    .grid-row {
+        margin-bottom: @grid-gap-width;
+    }
+    .grid-cell {
+        height: @grid-width;
+        width: @grid-width;
+    }
+    .tile {
+        height: @grid-width;
+        width: @grid-width;
+    }
+    .gameboard {
+        width: @gameboard-width;
+        height: @gameboard-width;
+    }
+    .for-row(4,4,@grid-width,@grid-gap-width);
+
+    .title { font-size: (@base-font-size * @title-font-size-multiple)}
+    .control-panel__btn {font-size: (@base-font-size * @btn-font-size-multiple)}
+    .score-panel__score {font-size: (@base-font-size * @score-font-size-multiple)}
+    .note { font-size: (@base-font-size * @note-font-size-multiple)}
+}
