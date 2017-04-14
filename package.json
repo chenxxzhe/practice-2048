@@ -5,7 +5,7 @@
   "main": "/app/main.js",
   "scripts": {
     "start": "webpack-dev-server --progress --config webpack.dev.config.js --colors",
-    "build": "",
+    "build": "set NODE_ENV=production && webpack --config webpack.product.config.js --progress",
     "test": "mocha --compilers js:babel-core/register test.js"
   },
   "author": "chenzhe",
