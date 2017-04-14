@@ -6,7 +6,7 @@
   "scripts": {
     "start": "webpack-dev-server --progress --config webpack.dev.config.js --colors",
     "build": "",
-    "test": "mocha test.js"
+    "test": "mocha --compilers js:babel-core/register test.js"
   },
   "author": "chenzhe",
   "license": "ISC",

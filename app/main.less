@@ -58,10 +58,41 @@ body {
     border-radius: 3px;
     font-weight: bold;
     cursor: pointer;
+    &:active {
+        color: #ddd;
+        background-color: #7F5A46;
+    }
 }
-.control-panel__btn:active {
-    color: #ddd;
-    background-color: #7F5A46;
+// .control-panel__btn:active {
+//     color: #ddd;
+//     background-color: #7F5A46;
+// }
+
+.game-over {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: none;
+    background: rgba(255, 255, 255, 0.6);
+}
+.game-over-modal {
+    margin: 0 auto;
+    text-align: center;
+}
+.slide-in {
+    animation: slideIn 1s linear;
+    animation-fill-mode: forwards;
+}
+@keyframes slideIn {
+    from {transform: translateY(80%)}
+    to {transform: translateY(30%)}
+}
+.game-over-title {
+    color: #776E65;
+    font-weight: bold;
+}
+.try-again {
+    .control-panel__btn();
 }
 
 
@@ -70,6 +101,7 @@ body {
     margin: 10px 0;
     background-color: #BBADA0;
     border-radius: 10px;
+    overflow: hidden
 }
 
 
@@ -89,24 +121,44 @@ body {
 }
 .tile {
     position: absolute;
+    text-align: center;
+    font-weight: bold;
     border-radius: 3px;
-    transition: all 0.2s linear;
+    transition: all 0.1s linear;
 }
 
+.fade-in {
+    animation: fadeIn 0.3s ease-out 0s;
+}
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        filter: alpha(opacity=0);
+    }
+    to {
+        opacity: 1;
+        filter: alpha(opacity=100);
+    }
+}
 
-.tile-color-2 { background-color: #EEE4DA; }
-.tile-color-4 { background-color: #EDE0C8; }
-.tile-color-8 { background-color: #F2B179; }
-.tile-color-16 { background-color: #F59563; }
-.tile-color-32 { background-color: #F67C5F; }
-.tile-color-64 { background-color: #F65E3B; }
-.tile-color-128 { background-color: #EDCF72; }
-.tile-color-256 { background-color: #EDCC61; }
-.tile-color-512 { background-color: #EDC850; }
-.tile-color-1024 { background-color: #edc089; }
-.tile-color-2048 { background-color: #edb8c2; }
-.tile-color-4196 { background-color: #dc98b2; }
-.tile-color-8392 { background-color: #db88a2; }
+.hide {
+    opacity: 0;
+    filter: alpha(opacity=0);
+}
+
+.tile-color-2 { background-color: #EEE4DA; color: #776E65;}
+.tile-color-4 { background-color: #EDE0C8; color: #776E65;}
+.tile-color-8 { background-color: #F2B179; color: #FFF;}
+.tile-color-16 { background-color: #F59563; color: #FFF}
+.tile-color-32 { background-color: #F67C5F; color: #FFF}
+.tile-color-64 { background-color: #F65E3B; color: #FFF}
+.tile-color-128 { background-color: #EDCF72; color: #FFF}
+.tile-color-256 { background-color: #EDCC61; color: #FFF}
+.tile-color-512 { background-color: #EDC850; color: #FFF}
+.tile-color-1024 { background-color: #edc089; color: #FFF}
+.tile-color-2048 { background-color: #edb8c2; color: #FFF}
+.tile-color-4096 { background-color: #dc98b2; color: #FFF}
+.tile-color-8192 { background-color: #db88a2; color: #FFF}
 
 // 生成4X4格子位置
 // 注意：when 下面不能再有when
@@ -117,10 +169,29 @@ body {
 }
 .for-col(@row, @col, @w, @gap) when (@col>0){
     .for-col(@row, (@col - 1), @w, @gap);
-    .tile-pos-@{row}-@{col} {
+    @row0: @row - 1;
+    @col0: @col - 1;
+    .tile-pos-@{row0}-@{col0} {
         transform: translate(((@w + @gap) * @col - @w), ((@w + @gap) * @row - @w));
     }
 }
+
+.for-tile(@base) {
+    .tile-2 {font-size: @base * 6}
+    .tile-4 {font-size: @base * 6}
+    .tile-8 {font-size: @base * 6}
+    .tile-16 {font-size: @base * 5.5}
+    .tile-32 {font-size: @base * 5.5}
+    .tile-64 {font-size: @base * 5.5}
+    .tile-128 {font-size: @base * 5}
+    .tile-256 {font-size: @base * 5}
+    .tile-512 {font-size: @base * 5}
+    .tile-1024 {font-size: @base * 4}
+    .tile-2048 {font-size: @base * 4}
+    .tile-4096 {font-size: @base * 4}
+    .tile-8192 {font-size: @base * 4}
+}
+
 
 // 响应式 520px 为界
 @base-font-size: 12px;
@@ -129,6 +200,7 @@ body {
 @btn-font-size-multiple: 1.5;
 @score-font-size-multiple: 2;
 @note-font-size-multiple: 1.5;
+// @tile-font-size-multiple: 6;
 @container-width: 520px;
 @container-width-small: 290px;
 @gameboard-width: @container-width;
@@ -150,18 +222,34 @@ body {
     .tile {
         height: @grid-width-small;
         width: @grid-width-small;
+        line-height: @grid-width-small;
     }
     .gameboard {
         width: @gameboard-width-small;
         height: @gameboard-width-small;
     }
     .for-row(4,4, @grid-width-small, @grid-gap-width-small);
+    .for-tile((@base-font-size-small - 2px));
 
     .title { font-size: (@base-font-size-small * @title-font-size-multiple)}
     .control-panel__btn {font-size: (@base-font-size-small * @btn-font-size-multiple)}
     .score-panel__score {font-size: (@base-font-size-small * @score-font-size-multiple)}
     .note { font-size: (@base-font-size-small * @note-font-size-multiple)}
 
+    .game-over {
+        width: @gameboard-width-small;
+        height: @gameboard-width-small;
+    }
+    .game-over-modal {
+        width: @gameboard-width-small;
+        height: @gameboard-width-small;
+    }
+    .game-over-title {
+        font-size: @base-font-size-small * 4;
+    }
+    .try-again {
+        font-size: @base-font-size-small * 2;
+    }
 }
 
 @media screen and (min-width: (@container-width + 1px)) {
@@ -177,15 +265,37 @@ body {
     .tile {
         height: @grid-width;
         width: @grid-width;
+        line-height: @grid-width;
     }
     .gameboard {
         width: @gameboard-width;
         height: @gameboard-width;
     }
+    // 格子位置
     .for-row(4,4,@grid-width,@grid-gap-width);
+    .for-tile(@base-font-size);
+
+    // 格子字体大小
+
 
     .title { font-size: (@base-font-size * @title-font-size-multiple)}
     .control-panel__btn {font-size: (@base-font-size * @btn-font-size-multiple)}
     .score-panel__score {font-size: (@base-font-size * @score-font-size-multiple)}
     .note { font-size: (@base-font-size * @note-font-size-multiple)}
+
+    .game-over {
+        width: @gameboard-width;
+        height: @gameboard-width;
+    }
+    .game-over-modal {
+        width: @gameboard-width;
+        height: @gameboard-width;
+    }
+    .game-over-title {
+        font-size: @base-font-size * 4;
+    }
+    .try-again {
+        font-size: @base-font-size * 2;
+    }
+
 }
