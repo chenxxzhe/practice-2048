@@ -47,7 +47,6 @@ window.onload = function() {
     };
 
     game.onGameOver = function() {
-        console.log('game over');
         showModal();
         tryAgainBtn.onclick = function() {
             newGame();
@@ -93,7 +92,7 @@ window.onload = function() {
     // 监听滑动
     var touchStartClientX, touchStartClientY, touchEndClientX, touchEndClientY;
     gameBoard.addEventListener('touchstart', function(e) {
-        e.preventDefault();
+        // e.preventDefault();
         if (event.targetTouches.length > 1) return; // 多于1个手指控制
         touchStartClientX = e.touches[0].clientX;
         touchStartClientY = e.touches[0].clientY;
@@ -102,7 +101,7 @@ window.onload = function() {
         e.preventDefault();
     });
     gameBoard.addEventListener('touchend', function(e) {
-        if (event.targetTouches.length > 1) return; // 持续滑动
+        if (event.targetTouches.length > 0) return; // 持续滑动
         touchEndClientX = event.changedTouches[0].clientX;
         touchEndClientY = event.changedTouches[0].clientY;
         var dx = touchEndClientX - touchStartClientX;
@@ -149,6 +148,8 @@ window.onload = function() {
     if (parseCookie()) {
         resetTile();
     }
+
+    game.gameOver()
 
     function newGame() {
         hideModal();
