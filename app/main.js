@@ -149,8 +149,6 @@ window.onload = function() {
         resetTile();
     }
 
-    game.gameOver()
-
     function newGame() {
         hideModal();
         // 移动如何改变tile
